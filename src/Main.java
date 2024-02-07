@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner s = new Scanner(System.in);
-    static Socket socket;
+    private static Socket socket;
     private static String login = "";
 
     public static void main(String[] args) {
