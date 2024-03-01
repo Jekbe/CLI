@@ -54,13 +54,15 @@ public class Main {
 
             String[] ramka = wyslij_odbierz(request);
             switch (ramka[2]) {
-                case "status:200" -> System.out.println("\nZalogowno pomyślnie");
+                case "status:200" -> {
+                    System.out.println("\nZalogowno pomyślnie");
+                    login = myLogin;
+                }
                 case "status:401" -> System.out.println("\nBłędny login lub hasło. Spróbuj ponownie");
                 case "status:500" -> System.out.println("\nSerwer nie nawiązał połączenia z bazą danych. Spróbuj ponownie");
                 default -> System.out.println("\nNieznany błąd. Spróbuj ponownie");
             }
 
-            login = myLogin;
         } catch (IOException | InputMismatchException e) {
             System.out.println("\nBłąd: " + e + ". Spróbuj ponownie");
         }
