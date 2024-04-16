@@ -7,12 +7,16 @@ import java.util.Scanner;
 public class Main {
     private static final Scanner s = new Scanner(System.in);
     private static Socket socket;
+    private static PrintWriter out;
+    private static BufferedReader in;
     private static String login = "";
 
     public static void main(String[] args) {
         boolean go = true;
         try {
             socket = new Socket("localhost", 8001);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             while (go) {
                 System.out.println("\nWybierz opcję: ");
@@ -34,6 +38,8 @@ public class Main {
         } finally {
             try {
                 socket.close();
+                out.close();
+                in.close();
             } catch (IOException e) {
                 System.out.println("Błąd: " + e);
             }
@@ -165,9 +171,6 @@ public class Main {
                 System.out.println("Wysyłanie pliku:");
                 long rozmiar = plik.length();
 
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
                 if (rozmiar > 0){
                     BufferedInputStream bis = new BufferedInputStream(new FileInputStream(plik));
 
@@ -260,13 +263,12 @@ public class Main {
     }
 
     private static String[] wyslij_odbierz(String request) throws IOException {
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+        System.out.println("Wygenerowano ramkę: " + request);
         out.println(request);
         out.flush();
 
         String response = in.readLine();
+        System.out.println("Otrzymano odpowiedź: " + response);
         return response.split(";");
     }
 }
